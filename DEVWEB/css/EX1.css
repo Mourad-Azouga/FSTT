@@ -1,0 +1,43 @@
+ul {
+    list-style-type: none; /* Remove default bullets */
+  }
+  
+  ul li {
+    position: relative; /* Position list items relative for counters */
+    counter-increment: level1;
+  }
+  ul li:hover {
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5); /* Your desired shadow effect */
+  }
+  
+  ul li:before {
+    content: counter(level1, upper-alpha) " : "; /* Display the first-level counter */
+  }
+  
+  /* Reset counters for each new first-level list item */
+
+  ul ul li {
+    counter-increment: level2;
+  }
+  .liens{
+    font-weight: bold;
+  }
+  ul ul li:before {
+    content: counter(level1, upper-alpha) "-" counter(level2) " : "; /* Display first and second-level counters */
+  }
+  
+  /* Reset counters for each new second-level list item */
+
+  ul ul ul li {
+    background-color: #c5aaf2;
+    counter-increment: level3;
+  }*
+  ul ul ul li :last-child, ul ul ul li:first-child{
+    background-color: transparent;
+  }
+  
+  ul ul ul li:before {
+    content: counter(level1, upper-alpha) "-" counter(level2) "." counter(level3, lower-alpha) " : "; /* Display first, second, and third-level counters */
+  }
+  
+  

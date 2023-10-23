@@ -1,0 +1,21 @@
+1-Linked list with 5 periods
+2-6 Days each have the period linked list, but Saturday has a limit of 2
+3-If a person reserves a salle awel mera kanakhdo les details dialo kamlin w nsejlohom, sinon kanakhdo only le nom wli b9a kayb9a msejel
+4-Kolama kaysali nhar katfreeya list dial dak nhar w kartja3 string bach n9dro naffichiwha ida bghina mn ba3d, kola mera dik str kanzido
+elih hta njem3o simana kamla, nsemiw kola string week 1++
+5-Nakhdo time input from execve(date) w nakhdo l path mn getenv hitach kaytbdl
+6-wahd l'utilisateur maymknch y reserver 2 salle f le meme temps
+7-Maymknch t reserve f past times
+8-Annulation dial reservation, only 9bel 60min (refundable) sinon kanakhdo lflisat wkanzido wahd leiba hamra f utilisateur li fih had leaba
+9-Kayna la possibilité yzid chihaja fla salle(maybe)
+10-ida reserviti 9bel mn 15min nbdo dlhissa aandk lha9 tzid chihaja sinon la
+
+1-Make a basic linked list with 5 periods: 9->10:45 | 11->12:45 | 13->14:45 | 15->16:45 | 17->18:45
+2-Find a way to store the 5 periods inside 6 days, saturday having only 2 periods.
+3-Take the time and date from the user automatically to be able to find the periods.
+4-Store and free previous time periods into an array to be printed later if wanted, the array needs to be named after the week, and will store each day's info in it after it's passed and ocne the week is completed the array will be completed and we'll start storing all the info in a new array.
+5-The room can't be reserved more than 1 time per period.
+6-The user's interface needs to have a clock, an option to check today's appointements, add and remove an appointement, find a user appointments and details by name.
+7-1 user can't reserve 2 sessions in the same time.
+8-Can't reserve past time sessions.
+9-When the user wants to reserve an available session it gives two options, if he already reserved before we'll only need his name, if not we'll create a new user where we'll store date like the name, the CNE, the phone number and how many times he booked a session.
