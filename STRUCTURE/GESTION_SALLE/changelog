@@ -9,4 +9,5 @@ DESTROY!
 -Remade the entire thing from scratch, devided it into multiple files so it could be easier to read, multiple 
 memory issues expected.
 -Added delete appointment, make appointment, display all appointments everything working properly now, removed user details tho'
-
+-No memory leaks after Valgrind test HURRAY!
+-Added user details, find user and now only a made user can make appointments

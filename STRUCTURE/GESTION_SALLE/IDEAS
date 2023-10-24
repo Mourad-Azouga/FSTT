@@ -19,3 +19,4 @@ elih hta njem3o simana kamla, nsemiw kola string week 1++
 7-1 user can't reserve 2 sessions in the same time.
 8-Can't reserve past time sessions.
 9-When the user wants to reserve an available session it gives two options, if he already reserved before we'll only need his name, if not we'll create a new user where we'll store date like the name, the CNE, the phone number and how many times he booked a session.
+

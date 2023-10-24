@@ -1,4 +1,5 @@
 #include "header.h"
+struct User* users = NULL;
 
 // Function to create a new time slot
 
@@ -34,12 +35,14 @@ int main() {
         printf("1. Display Available Time Slots\n");
         printf("2. Make an Appointment\n");
         printf("3. Cancel an Appointment\n");
+        printf("4. Create new user\n");
+        printf("5. Find user\n");
         printf("0. Exit\n");
         printf("Enter your choice: ");
         char input[10];
 
         if (fgets(input, sizeof(input), stdin) != NULL) {
-            if (sscanf(input, "%d", &choice) != 1 || choice < 1 || choice > 3) {
+            if (sscanf(input, "%d", &choice) != 1 || choice < 0 || choice > 5) {
                 printf("Invalid input. Please enter a valid choice (1-3).\n");
                 continue;
             }
@@ -50,7 +53,7 @@ int main() {
                     displayTimeSlots(timeSlots);
                     break;
                 case 2:
-                    makeAppointment(timeSlots);
+                    makeAppointment(timeSlots, users);
                     break;
                 case 0:
                     printf("Exiting the program.\n");
@@ -68,6 +71,45 @@ int main() {
                     printf("Invalid input. Please try again.\n");
                     }
                     break;
+                case 4:
+                    printf("Create a New User\n");
+                    char userName[100];
+                    int phone;
+                    char prof[10];
+                        printf("Enter the name of the new user: ");
+                      if (fgets(userName, sizeof(userName), stdin) != NULL) {
+                        strtok(userName, "\n"); // Remove newline character
+                         printf("Enter phone number: ");
+    if (scanf("%d", &phone) != 1) {
+        printf("Invalid phone input. Please enter a valid phone number.\n");
+        }
+    getchar(); // Consume the newline character left by scanf
+
+    printf("Enter profession: ");
+    
+    if (fgets(prof, sizeof(prof), stdin) != NULL) {
+        strtok(prof, "\n"); // Remove newline character
+        createUser(&users, userName, phone, prof);
+        printf("User created successfully.\n");
+    } else {
+        printf("Invalid profession input.\n");
+    }
+} else {
+    printf("Invalid name input.\n");
+}
+    break;
+case 5:
+    printf("Find a User\n");
+    char searchName[100];
+    printf("Enter the name of the user to find: ");
+    if (fgets(searchName, sizeof(searchName), stdin) != NULL) {
+        strtok(searchName, "\n"); // Remove newline character
+        struct User* foundUser = findUser(users, searchName);
+        displayUserDetails(foundUser);
+    } else {
+        printf("Invalid input. Please try again.\n");
+    }
+    break;
                 default:
                     printf("Invalid choice. Please try again.\n");
             }

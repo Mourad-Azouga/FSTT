@@ -18,53 +18,66 @@ struct TimeSlot* createTimeSlot(int startH, int startM, int endH, int endM) {
 }
 //----------------------------------------------------------------------------------------------------------------------
 // Function to make an appointment
-void makeAppointment(struct TimeSlot* timeSlots) {
+void makeAppointment(struct TimeSlot* timeSlots, struct User* users) {
     // Display available time slots
     printf("Available Time Slots:\n");
     displayTimeSlots(timeSlots);
 
-    // Ask the user to choose a time slot
-    int chosenSlot;
-    char input[100];
+    // Ask the user to enter their name
+    char userName[100];
+    printf("Enter your name: ");
+    if (fgets(userName, sizeof(userName), stdin) != NULL) {
+        strtok(userName, "\n"); // Remove newline character
 
-    printf("Enter the number of the time slot you want to reserve: ");
-    if (fgets(input, sizeof(input), stdin) != NULL) {
-        if (sscanf(input, "%d", &chosenSlot) != 1 || chosenSlot < 1) {
-            printf("Invalid input. Please enter a valid time slot number.\n");
-            return;
-        }
+        // Check if the user exists
+        struct User* user = findUser(users, userName);
 
-        // Traverse the linked list to the chosen slot
-        struct TimeSlot* currentSlot = timeSlots;
-        int slotIndex = 1; // Start with 1-based index
-        while (currentSlot != NULL && slotIndex < chosenSlot) {
-            currentSlot = currentSlot->next;
-            slotIndex++;
-        }
-
-        if (currentSlot == NULL) {
-            printf("Invalid time slot number. Please try again.\n");
+        if (user == NULL) {
+            printf("User '%s' does not exist. Please create a user first.\n", userName);
         } else {
-            // Check if the selected time slot is available
-            if (strcmp(currentSlot->name, "Available") == 0) {
-                // Ask for the user's name
-                char userName[100];
-                printf("Enter your name: ");
-                if (fgets(userName, sizeof(userName), stdin) != NULL) {
-                    strtok(userName, "\n"); // Remove newline character
-                    strcpy(currentSlot->name, userName);
-                    printf("Appointment successfully reserved for %s.\n", userName);
+            // User exists, proceed to make an appointment
+
+            // Ask the user to choose a time slot
+            int chosenSlot;
+            char input[100];
+
+            printf("Enter the number of the time slot you want to reserve: ");
+            if (fgets(input, sizeof(input), stdin) != NULL) {
+                if (sscanf(input, "%d", &chosenSlot) != 1 || chosenSlot < 1) {
+                    printf("Invalid input. Please enter a valid time slot number.\n");
+                    return;
+                }
+
+                // Traverse the linked list to the chosen slot
+                struct TimeSlot* currentSlot = timeSlots;
+                int slotIndex = 1; // Start with a 1-based index
+                while (currentSlot != NULL && slotIndex < chosenSlot) {
+                    currentSlot = currentSlot->next;
+                    slotIndex++;
+                }
+
+                if (currentSlot == NULL) {
+                    printf("Invalid time slot number. Please try again.\n");
                 } else {
-                    printf("Invalid name input.\n");
+                    // Check if the selected time slot is available
+                    if (strcmp(currentSlot->name, "Available") == 0) {
+                        // Reserve the time slot for the user
+                        strcpy(currentSlot->name, userName);
+                        printf("Appointment successfully reserved for %s.\n", userName);
+                    } else {
+                        printf("This time slot is already booked. Please choose another one.\n");
+                    }
                 }
             } else {
-                printf("This time slot is already booked. Please choose another one.\n");
+                printf("Invalid input. Please try again.\n");
             }
         }
     } else {
         printf("Invalid input. Please try again.\n");
     }
 }
+
+
 //----------------------------------------------------------------------------------------------------------------------
 void deleteAppointment(struct TimeSlot* timeSlots, int slotNumber) {
     struct TimeSlot* currentSlot = timeSlots;
