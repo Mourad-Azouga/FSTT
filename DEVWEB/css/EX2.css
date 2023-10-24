@@ -1,0 +1,65 @@
+.koko{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+table {
+    border-collapse: collapse;
+
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+    max-height: fit-content;
+    font-family:'Times New Roman', Times, serif;
+    border-style:dashed;
+}
+th, td {
+    border: 1px solid black;
+    border-style: dashed;
+}
+td:empty{
+    border-color: red;
+    border-style: solid;
+}
+/*Chaque 6 colomns, 3 lwala fchkel, 4,5,6 kolom fchkel*/
+tr:nth-child(6n+1){
+    background-color: #8dcad4;
+}
+tr:nth-child(6n+2){
+    background-color: #8dcad4;
+}
+tr:nth-child(6n+3){
+    background-color: #8dcad4;
+}
+tr:nth-child(6n+4){
+    background-color:  #79b4c0;
+}
+tr:nth-child(6n+5){
+    background-color: #5a96a1 ;
+}
+tr:nth-child(6n+6){
+    background-color: #3d7984;
+}
+
+td:nth-child(4){
+    color : red;
+}
+td:nth-child(4)::selection{
+    background-color: rgb(0, 195, 255);
+}
+td:nth-child(3)::selection{
+    background-color: yellow;
+    }
+td:nth-child(2)::selection{
+    background-color: yellow;
+}
+td:nth-child(1)::selection{
+    background-color: yellow;
+}
+th {
+    background-color: #000000;
+    font-family: 'Times New Roman', Times, serif;
+    color: #ffffff;
+    font-size: large;
+    border-style: dashed;
+}
