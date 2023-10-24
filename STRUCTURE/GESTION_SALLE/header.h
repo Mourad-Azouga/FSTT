@@ -7,11 +7,11 @@
 #include<time.h>
 /*USER INIT*/
 struct User {
-    int userID;
-    char name[10];
-    int phone;
-    char prof[10];
-    struct User* next;
+	int userID;
+	char name[10];
+	int phone;
+	char prof[10];
+	struct User* next;
 };
 /*USER.C*/
 void createUser(struct User** users, const char* name, int phone, const char* prof);
@@ -20,12 +20,12 @@ void displayUserDetails(struct User* user);
 
 /*TIMESLOT INIT*/
 struct TimeSlot {
-    int startHour;
-    int startMinute;
-    int endHour;
-    int endMinute;
-    char name[100];
-    struct TimeSlot* next;
+	int startHour;
+	int startMinute;
+	int endHour;
+	int endMinute;
+	char name[100];
+	struct TimeSlot* next;
 };
 
 /*APPO.C*/
