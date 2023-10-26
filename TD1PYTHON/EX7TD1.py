@@ -1,26 +1,26 @@
 import math
 def somme():
     print("Vous avez choisis la Somme:\n")
-    a = int(input("Saisir le 1er num\n"))
-    b = int(input("Saisir le 2eme num\n"))
+    a = float(input("Saisir le 1er num\n"))
+    b = float(input("Saisir le 2eme num\n"))
     som = a + b
     print(a, "+", b, "=", som)
 def sous():
     print("Vous avez choisis la Soustraction\n")
-    a = int(input("Saisir le 1er num\n"))
-    b = int(input("Saisir le 2eme num\n"))
+    a = float(input("Saisir le 1er num\n"))
+    b = float(input("Saisir le 2eme num\n"))
     sus = a - b
     print(a, "-", b, "=", sus)
 def multi():
     print("Vous avez choisis la Multiplication\n")
-    a = int(input("Saisir le 1er num\n"))
-    b = int(input("Saisir le 2eme num\n"))
+    a = float(input("Saisir le 1er num\n"))
+    b = float(input("Saisir le 2eme num\n"))
     mul = a * b
     print(a, "*", b, "=", mul)
 def div():
     print("Vous avez choisis la Division\n")
-    a = int(input("Saisir le 1er num\n"))
-    b = int(input("Saisir le 2eme num\n"))
+    a = float(input("Saisir le 1er num\n"))
+    b = float(input("Saisir le 2eme num\n"))
     if b == 0:
         print("b ne peut pas prendre 0")
         return
@@ -28,28 +28,28 @@ def div():
     print(a, "/", b, "=", dii)
 def puis():
     print("Vous avez choisis la Puissance\n")
-    a = int(input("Saisir le 1er num\n"))
-    b = int(input("Saisir la puissance\n"))
+    a = float(input("Saisir le 1er num\n"))
+    b = float(input("Saisir la puissance\n"))
     pui = a ** b
     print(a, "^", b, "=", pui)
 def raccar():
     print("Vous avez choisis la Racine carrée\n")
-    a = int(input("Saisir le num\n"))
+    a = float(input("Saisir le num\n"))
     sq = math.sqrt(a)
     print("√",a,"=", sq)
 def carr():
     print("Vous avez choisis le Carré\n")
-    a = int(input("Saisir le num\n"))
+    a = float(input("Saisir le num\n"))
     carr = a * a
     print(a, "^ 2 =", carr)
 def cube():
     print("Vous avez choisis le Cube\n")
-    a = int(input("Saisir le num\n"))
+    a = float(input("Saisir le num\n"))
     cub = a * a * a
     print(a, "^ 3 =", cub)
 def valab():
     print("Vous avez choisis la Valeur absolue\n")
-    a = int(input("Saisir le num\n"))
+    a = float(input("Saisir le num\n"))
     if a < 0:
         vall = a * -1
     else:
@@ -57,8 +57,8 @@ def valab():
     print("|",a, "| =", vall)
 def pgcd():
     print("Vous avez choisis la PGCD\n")
-    a = int(input("SVP saisir le 1er nombre\n"))
-    b = int(input("SVP saisir le 2eme nombre\n"))
+    a = float(input("SVP saisir le 1er nombre\n"))
+    b = float(input("SVP saisir le 2eme nombre\n"))
     aend = a
     bend = b
     while b != 0:
@@ -68,7 +68,7 @@ def pgcd():
     print("Le PGCD de", aend, "et", bend, "est", a)
 def fac():
     print("Vous avez choisis la Factorielle\n")
-    N = int(input("SVP de saisir le nombre\n"))
+    N = float(input("SVP de saisir le nombre\n"))
     i = 0
     faq = 1
     for i in range(N) :
