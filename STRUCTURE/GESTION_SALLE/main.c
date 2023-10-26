@@ -1,13 +1,11 @@
 #include "header.h"
 struct User* users = NULL;
 
-// Function to create a new time slot
-
-
 // Function to display time slots
 void displayTimeSlots(struct TimeSlot* week[6]) {
+    const char* jours[]={"Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"};
     for (int day = 0; day < 6; day++) {
-        printf("Day %d:\n", day + 1);
+        printf(" %s:\n", jours[day]);
         struct TimeSlot* currentSlot = week[day];
         int slotNumber = 1;
 
@@ -50,43 +48,43 @@ for (int day = 0; day < 6; day++) {
 
     do {
         Sleep(2000);
-        printf("\n---- Meeting Room Reservation System ----\n");
-        printf("1. Display Available Time Slots\n");
-        printf("2. Make an Appointment\n");
-        printf("3. Cancel an Appointment\n");
-        printf("4. Create new user\n");
-        printf("5. Find user\n");
-        printf("0. Exit\n");
-        printf("Enter your choice: ");
+        printf("\n---- Systeme de Reservation de Salle de Reunion ----\n");
+        printf("1. Afficher les Creneaux Horaires Disponibles\n");
+        printf("2. Prendre un Rendez-vous\n");
+        printf("3. Annuler un Rendez-vous\n");
+        printf("4. Creer un Nouvel Utilisateur\n");
+        printf("5. Trouver un Utilisateur\n");
+        printf("0. Quitter\n");
+        printf("Entrez votre choix : ");
 
         if (fgets(input, sizeof(input), stdin) != NULL) {
             if (sscanf(input, "%d", &choice) != 1 || choice < 0 || choice > 5) {
-                printf("Invalid input. Please enter a valid choice (0-5).\n");
+                printf("Entree non valide. Veuillez entrer un choix valide (0-5).\n");
                 continue;
             }
 
             switch (choice) {
                 case 1:
-                    printf("Available Time Slots:\n");
+                    printf("Creneaux Horaires Disponibles :\n");
                     displayTimeSlots(week);
                     break;
                 case 2:
                     makeAppointment(week, users);
                     break;
                 case 0:
-                    printf("Exiting the program.\n");
+                    printf("Fermeture du programme.\n");
                     break;
 case 3:
-    printf("Cancel an Appointment\n");
-    printf("Enter the number of the day (1-6) for the appointment you want to delete: ");
+    printf("Annuler un Rendez-vous\n");
+    printf("Entrez le numero du jour (1-6) pour le rendez-vous que vous souhaitez supprimer : ");
     if (fgets(input, sizeof(input), stdin) != NULL) {
         if (sscanf(input, "%d", &chosenDay) != 1 || chosenDay < 1 || chosenDay > 6) {
-            printf("Invalid input. Please enter a valid day (1-6).\n");
+            printf("Entree non valide. Veuillez entrer un jour valide (1-6).\n");
         } else {
-            printf("Enter the number of the time slot you want to cancel (1-5): ");
+            printf("Entrez le numéro du creneau horaire que vous souhaitez annuler (1-5) : ");
             if (fgets(input, sizeof(input), stdin) != NULL) {
                 if (sscanf(input, "%d", &chosenSlot) != 1 || chosenSlot < 1 || chosenSlot > 5) {
-                    printf("Invalid input. Please enter a valid time slot number (1-5).\n");
+                    printf("Entree non valide. Veuillez entrer un numero de creneau horaire valide (1-5).\n");
                 } else {
                     deleteAppointment(week, chosenDay, chosenSlot); // Updated function call
                 }
@@ -96,48 +94,48 @@ case 3:
     break;
                     break;
                 case 4:
-                    printf("Create a New User\n");
+                    printf("Creer un Nouvel Utilisateur\n");
                     char userName[100];
                     int phone;
                     char prof[10];
-                    printf("Enter the name of the new user: ");
+                    printf("Entrez le nom du nouvel utilisateur : ");
                     if (fgets(userName, sizeof(userName), stdin) != NULL) {
                         strtok(userName, "\n"); // Remove newline character
-                        printf("Enter phone number: ");
-                        if (scanf("%d", &phone) != 1) {
-                            printf("Invalid phone input. Please enter a valid phone number.\n");
+                        printf("Entrez le numero de telephone :");
+                        if (scanf("%d", &phone) != 1) { //Kayna mochkil hna ida kan input != int
+                            printf("Entree non valide. Veuillez entrer un numero de telephone valide.\n");
                         }
                         getchar(); // Consume the newline character left by scanf
 
-                        printf("Enter profession: ");
+                        printf("Entrez la profession : ");
                         if (fgets(prof, sizeof(prof), stdin) != NULL) {
                             strtok(prof, "\n"); // Remove newline character
                             createUser(&users, userName, phone, prof);
-                            printf("User created successfully.\n");
+                            printf("Utilisateur cree avec succes.\n");
                         } else {
-                            printf("Invalid profession input.\n");
+                            printf("Entree non valide.\n");
                         }
                     } else {
-                        printf("Invalid name input.\n");
+                        printf("Entree non valide.\n");
                     }
                     break;
                 case 5:
-                    printf("Find a User\n");
+                    printf("Trouver un Utilisateur\n");
                     char searchName[100];
-                    printf("Enter the name of the user to find: ");
+                    printf("Entrez le nom de l'utilisateur a trouver : ");
                     if (fgets(searchName, sizeof(searchName), stdin) != NULL) {
                         strtok(searchName, "\n"); // Remove newline character
                         struct User* foundUser = findUser(users, searchName);
                         displayUserDetails(foundUser);
                     } else {
-                        printf("Invalid input. Please try again.\n");
+                        printf("Entree non valide. Veuillez reessayer.\n");
                     }
                     break;
                 default:
-                    printf("Invalid choice. Please try again.\n");
+                    printf("Choix non valide. Veuillez reessayer.\n");
             }
         } else {
-            printf("Input error. Please try again.\n");
+            printf("Erreur d'entree. Veuillez reessayer.\n");
         }
 
     } while (choice != 0);

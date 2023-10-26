@@ -41,13 +41,13 @@ struct User* findUser(struct User* users, const char* name) {
 // Display user details
 void displayUserDetails(struct User* user) {
 	if (user != NULL) {
-		printf("User ID: %d\n", user->userID);
-		printf("Name: %s\n", user->name);
-		printf("Phone number: %d\n", user->phone);
-		printf("Profession: %s\n", user->prof);
-		printf("Bookings count: %d\n", user->bookings);
+		printf("ID de l'utilisateur : %d\n", user->userID);
+		printf("Nom : %s\n", user->name);
+		printf("Numero de telephone : %d\n", user->phone);
+		printf("Profession : %s\n", user->prof);
+		printf("Nombre de reservations : %d\n", user->bookings);
 		// Add code to display other user details
 	} else {
-		printf("User not found.\n");
+		printf("Utilisateur non trouve.\n");
 	}
 }
