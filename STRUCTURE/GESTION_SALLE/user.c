@@ -12,6 +12,7 @@ void createUser(struct User** users, const char* name, int phone, const char* pr
 	// For simplicity, we'll use a static counter here.
 	static int userIDCounter = 1;
 	newUser->userID = userIDCounter++;
+	newUser->bookings = 0;
 
 	strncpy(newUser->name, name, sizeof(newUser->name) - 1);
 	newUser->name[sizeof(newUser->name) - 1] = '\0'; // Ensure null-terminated
@@ -44,6 +45,7 @@ void displayUserDetails(struct User* user) {
 		printf("Name: %s\n", user->name);
 		printf("Phone number: %d\n", user->phone);
 		printf("Profession: %s\n", user->prof);
+		printf("Bookings count: %d\n", user->bookings);
 		// Add code to display other user details
 	} else {
 		printf("User not found.\n");

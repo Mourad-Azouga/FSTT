@@ -1,13 +1,22 @@
 #20/10/2023: AZOUGA MOURAD
--Created the repo, made the basic files: changelog, main.c, header.h and ideas
+-Created the repo, made the basic files: changelog, main.c, header.h and ideas  
 #22/10/2023:
--Made the first version of the program, doesn't work as expected.
+-Made the first version of the program  doesn't work as expected.   V-1.0.0
 #23/10/2023:
--Kinda fixed the program, still doesn't work as expected tho'
+-Kinda fixed the program, still doesn't work as expected tho' V-1.0.1
 #24/10/2023:
 DESTROY!
 -Remade the entire thing from scratch, devided it into multiple files so it could be easier to read, multiple 
-memory issues expected.
--Added delete appointment, make appointment, display all appointments everything working properly now, removed user details tho'
+memory issues expected. V-1.1.0
+-Added delete appointment, make appointment, display all appointments everything working properly now, removed user details tho'    V-1-1.1
 -No memory leaks after Valgrind test HURRAY!
--Added user details, find user and now only a made user can make appointments
+-Added user details, find user and now only a made user can make appointments V-1.1.2
+-REQUEST: Fix the press anything to go main menu.
+-REQUEST: Add appointment count for users
+#25/10/2023:
+-Fixed press... V-1.1.3
+#26/10/2023:
+-Fully working V-2.0.0 With weekdays and timeslots.
+-Booking count added, idk if I want to decrement it when an appointment is canceled or not 
+
+
