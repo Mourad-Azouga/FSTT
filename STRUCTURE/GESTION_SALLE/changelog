@@ -19,4 +19,7 @@ memory issues expected. V-1.1.0
 -Fully working V-2.0.0 With weekdays and timeslots.
 -Booking count added, idk if I want to decrement it when an appointment is canceled or not 
 -Translated to French
-
+#1/11/2023:
+-Added time and date.
+-Added delete user function(fully working)
+-V-2.2.0

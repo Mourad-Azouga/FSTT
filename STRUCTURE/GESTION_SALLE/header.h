@@ -6,28 +6,27 @@
 #include<string.h>
 #include<time.h>
 #include<windows.h>
-#include<locale.h>
 
 /*USER INIT*/
 struct User {
 	int userID;
-	char name[20];
+	char name[100];
 	int phone;
-	char prof[10];
+	char prof[100];
 	int bookings;
-	struct TimeSlot* weeklyAppointments[6]; // For Monday to Friday
+	struct TimeSlot* weeklyAppointments[6]; // For Monday to Saturday 6 fiha gher 2
 	struct User* next;
 };
 
 /*TIMESLOT INIT*/
 
 struct Day {
-	int dayOfWeek; // 0 for Monday, 1 for Tuesday, ..., 5 for Saturday
+	int dayOfWeek;
 	struct TimeSlot* appointments;
 	struct Day* next;
 };
 
-struct TimeSlot {
+struct TimeSlot {//Don't group the time, for future use
 	int day;
 	int startHour;
 	int startMinute;
@@ -36,6 +35,16 @@ struct TimeSlot {
 	char name[100];
 	struct TimeSlot* next;
 };
+
+struct DateTime {//will be used to eliminate past time appointments !IMPORTANT
+    char timeString[9];
+    int dayIndex;
+};
+/*MAIN.C*/
+struct DateTime printCurrentTimeAndDay();
+void displayTimeSlots(struct TimeSlot* week[6]);
+int main();
+
 /*USER.C*/
 void createUser(struct User** users, const char* name, int phone, const char* prof);
 struct User* findUser(struct User* users, const char* name);

@@ -8,8 +8,7 @@ void createUser(struct User** users, const char* name, int phone, const char* pr
 		exit(1);
 	}
 
-	// Assign a unique user ID (you can implement this logic)
-	// For simplicity, we'll use a static counter here.
+	// Assign a unique user ID (Starting from 1)
 	static int userIDCounter = 1;
 	newUser->userID = userIDCounter++;
 	newUser->bookings = 0;
@@ -63,7 +62,7 @@ void deleteUser(struct User** users, const char* name) {
 
 		// Ask for confirmation
 		char confirm[10];
-		printf("Êtes-vous sûr de vouloir supprimer cet utilisateur ? (oui/non): ");
+		printf("Êtes-vous sûr de vouloir supprimer cet utilisateur? (oui/non): ");
 		if (fgets(confirm, sizeof(confirm), stdin) != NULL) {
 			strtok(confirm, "\n"); // Remove newline character
 			if (strcmp(confirm, "oui") == 0) {

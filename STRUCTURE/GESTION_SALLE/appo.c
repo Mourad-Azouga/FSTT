@@ -11,7 +11,7 @@ struct TimeSlot* createTimeSlot(int day, int startH, int startM, int endH, int e
 	newSlot->startMinute = startM;
 	newSlot->endHour = endH;
 	newSlot->endMinute = endM;
-	strcpy(newSlot->name, "Disponible"); //Set name to "Available" for init
+	strcpy(newSlot->name, "Disponible"); //Set name to "Disponible" for init
 	newSlot->next = NULL;
 
 	return newSlot;

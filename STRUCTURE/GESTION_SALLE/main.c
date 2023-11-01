@@ -1,25 +1,25 @@
 #include "header.h"
 
 struct User* users = NULL;
-//function to print user's time
-void printCurrentTimeAndDay() {
-	time_t currentTime;
-	struct tm* timeInfo;
-	char timeString[9];  // HH:MM:SS
-	char dayString[10];  // DayName
-	// Get the current time
-	time(&currentTime);
-	timeInfo = localtime(&currentTime);
+//function to find and index the current user time and day
+struct DateTime printCurrentTimeAndDay() {
+    struct DateTime dateTime;
+    time_t currentTime;
+    struct tm* timeInfo;
 
-	// Format time as HH:MM:SS
-	strftime(timeString, sizeof(timeString), "%H:%M:%S", timeInfo);
+    // Get the current time
+    time(&currentTime);
+    timeInfo = localtime(&currentTime);
 
-	// Format day name
-	strftime(dayString, sizeof(dayString), "%A", timeInfo);
+    // Format time as HH:MM:SS
+    strftime(dateTime.timeString, sizeof(dateTime.timeString), "%H:%M:%S", timeInfo);
 
-	printf("Le temps : %s, Le jour : %s\n", timeString, dayString);
+    // Store the day index
+    dateTime.dayIndex = timeInfo->tm_wday;
 
+    return dateTime;
 }
+
 // Function to display time slots
 void displayTimeSlots(struct TimeSlot* week[6]) {
 	const char* jours[]={"Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"};
@@ -43,6 +43,7 @@ void displayTimeSlots(struct TimeSlot* week[6]) {
 
 
 int main() {
+	struct DateTime currentDateTime = printCurrentTimeAndDay();
 	char input[10];
 	int chosenDay, chosenSlot;
 	struct TimeSlot* week[6]; // An array to hold time slots for 6 days
@@ -67,7 +68,7 @@ int main() {
 	do {
 		Sleep(2000);
 		printf("\n---- Systeme de Reservation de Salle de Reunion ----\n");
-		printCurrentTimeAndDay();
+		printf("Le temps : %s, Index du jour actuel : %d\n", currentDateTime.timeString, currentDateTime.dayIndex);
 		printf("1. Afficher les Creneaux Horaires Disponibles\n");
 		printf("2. Prendre un Rendez-vous\n");
 		printf("3. Annuler un Rendez-vous\n");
