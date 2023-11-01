@@ -6,6 +6,8 @@
 #include<string.h>
 #include<time.h>
 #include<windows.h>
+#include<locale.h>
+
 /*USER INIT*/
 struct User {
 	int userID;
@@ -38,7 +40,7 @@ struct TimeSlot {
 void createUser(struct User** users, const char* name, int phone, const char* prof);
 struct User* findUser(struct User* users, const char* name);
 void displayUserDetails(struct User* user);
-
+void deleteUser(struct User** users, const char* name);
 
 
 /*APPO.C*/

@@ -1,6 +1,25 @@
 #include "header.h"
-struct User* users = NULL;
 
+struct User* users = NULL;
+//function to print user's time
+void printCurrentTimeAndDay() {
+    time_t currentTime;
+    struct tm* timeInfo;
+    char timeString[9];  // HH:MM:SS
+    char dayString[10];  // DayName
+    // Get the current time
+    time(&currentTime);
+    timeInfo = localtime(&currentTime);
+
+    // Format time as HH:MM:SS
+    strftime(timeString, sizeof(timeString), "%H:%M:%S", timeInfo);
+
+    // Format day name
+    strftime(dayString, sizeof(dayString), "%A", timeInfo);
+
+   printf("Le temps : %s, Le jour : %s\n", timeString, dayString);
+
+}
 // Function to display time slots
 void displayTimeSlots(struct TimeSlot* week[6]) {
     const char* jours[]={"Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"};
@@ -22,7 +41,6 @@ void displayTimeSlots(struct TimeSlot* week[6]) {
 
 
 
-#include "header.h"
 
 int main() {
     char input[10];
@@ -49,17 +67,19 @@ for (int day = 0; day < 6; day++) {
     do {
         Sleep(2000);
         printf("\n---- Systeme de Reservation de Salle de Reunion ----\n");
+        printCurrentTimeAndDay();
         printf("1. Afficher les Creneaux Horaires Disponibles\n");
         printf("2. Prendre un Rendez-vous\n");
         printf("3. Annuler un Rendez-vous\n");
         printf("4. Creer un Nouvel Utilisateur\n");
         printf("5. Trouver un Utilisateur\n");
+        printf("6. Supprimer un Utilisateur\n");
         printf("0. Quitter\n");
         printf("Entrez votre choix : ");
 
         if (fgets(input, sizeof(input), stdin) != NULL) {
-            if (sscanf(input, "%d", &choice) != 1 || choice < 0 || choice > 5) {
-                printf("Entree non valide. Veuillez entrer un choix valide (0-5).\n");
+            if (sscanf(input, "%d", &choice) != 1 || choice < 0 || choice > 6) {
+                printf("Entree non valide. Veuillez entrer un choix valide (0-6).\n");
                 continue;
             }
 
@@ -131,6 +151,17 @@ case 3:
                         printf("Entree non valide. Veuillez reessayer.\n");
                     }
                     break;
+                case 6:
+                                printf("Supprimer un Utilisateur\n");
+                char userNameToDelete[100];
+                printf("Saisissez le nom de l'utilisateur que vous souhaitez supprimer : ");
+                if (fgets(userNameToDelete, sizeof(userNameToDelete), stdin) != NULL) {
+                    strtok(userNameToDelete, "\n"); // Remove newline character
+                    deleteUser(&users, userNameToDelete);
+                } else {
+                    printf("Erreur d'entree. Veuillez reessayer.\n");
+                }
+                break;
                 default:
                     printf("Choix non valide. Veuillez reessayer.\n");
             }
