@@ -43,6 +43,7 @@ void displayTimeSlots(struct TimeSlot* week[6]) {
 
 
 int main() {
+	const char* dayNames[] = {"Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"};
 	struct DateTime currentDateTime = printCurrentTimeAndDay();
 	char input[10];
 	int chosenDay, chosenSlot;
@@ -68,7 +69,7 @@ int main() {
 	do {
 		Sleep(2000);
 		printf("\n---- Systeme de Reservation de Salle de Reunion ----\n");
-		printf("Le temps : %s, Index du jour actuel : %d\n", currentDateTime.timeString, currentDateTime.dayIndex);
+		printf("Heure actuelle : %s, Jour actuel : %s\n", currentDateTime.timeString, dayNames[currentDateTime.dayIndex]);
 		printf("1. Afficher les Creneaux Horaires Disponibles\n");
 		printf("2. Prendre un Rendez-vous\n");
 		printf("3. Annuler un Rendez-vous\n");
