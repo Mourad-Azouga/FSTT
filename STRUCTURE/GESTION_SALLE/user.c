@@ -54,45 +54,45 @@ void displayUserDetails(struct User* user) {
 
 // Function to delete a user
 void deleteUser(struct User** users, const char* name) {
-    // Find the user
-    struct User* userToDelete = findUser(*users, name);
+	// Find the user
+	struct User* userToDelete = findUser(*users, name);
 
-    if (userToDelete != NULL) {
-        // Display user details
-        displayUserDetails(userToDelete);
+	if (userToDelete != NULL) {
+		// Display user details
+		displayUserDetails(userToDelete);
 
-        // Ask for confirmation
-        char confirm[10];
-        printf("Êtes-vous sûr de vouloir supprimer cet utilisateur ? (oui/non): ");
-        if (fgets(confirm, sizeof(confirm), stdin) != NULL) {
-            strtok(confirm, "\n"); // Remove newline character
-            if (strcmp(confirm, "oui") == 0) {
-                // User confirmed deletion
-                struct User* current = *users;
-                struct User* prev = NULL;
+		// Ask for confirmation
+		char confirm[10];
+		printf("Êtes-vous sûr de vouloir supprimer cet utilisateur ? (oui/non): ");
+		if (fgets(confirm, sizeof(confirm), stdin) != NULL) {
+			strtok(confirm, "\n"); // Remove newline character
+			if (strcmp(confirm, "oui") == 0) {
+				// User confirmed deletion
+				struct User* current = *users;
+				struct User* prev = NULL;
 
-                // Find and delete the user from the list
-                while (current != userToDelete) {
-                    prev = current;
-                    current = current->next;
-                }
+				// Find and delete the user from the list
+				while (current != userToDelete) {
+					prev = current;
+					current = current->next;
+				}
 
-                if (prev == NULL) {
-				*users = current->next;
-                } else {
-                    prev->next = current->next;
-                }
+				if (prev == NULL) {
+					*users = current->next;
+				} else {
+					prev->next = current->next;
+				}
 
-                // Free memory for the deleted user
-                free(userToDelete);
+				// Free memory for the deleted user
+				free(userToDelete);
 
-                printf("Utilisateur supprimé avec succès.\n");
-            } else {
-                printf("Suppression de l'utilisateur annulée.\n");
-            }
-        }
-    } else {
-        // User not found
-        printf("Utilisateur non trouvé.\n");
-    }
+				printf("Utilisateur supprimé avec succès.\n");
+			} else {
+				printf("Suppression de l'utilisateur annulée.\n");
+			}
+		}
+	} else {
+		// User not found
+		printf("Utilisateur non trouvé.\n");
+	}
 }

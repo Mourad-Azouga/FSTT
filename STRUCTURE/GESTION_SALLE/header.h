@@ -22,9 +22,9 @@ struct User {
 /*TIMESLOT INIT*/
 
 struct Day {
-    int dayOfWeek; // 0 for Monday, 1 for Tuesday, ..., 5 for Saturday
-    struct TimeSlot* appointments;
-    struct Day* next;
+	int dayOfWeek; // 0 for Monday, 1 for Tuesday, ..., 5 for Saturday
+	struct TimeSlot* appointments;
+	struct Day* next;
 };
 
 struct TimeSlot {
