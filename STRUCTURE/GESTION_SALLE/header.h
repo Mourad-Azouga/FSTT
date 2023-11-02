@@ -39,11 +39,12 @@ struct TimeSlot {//Don't group the time, for future use
 struct DateTime {//will be used to eliminate past time appointments !IMPORTANT
     char timeString[9];
     int dayIndex;
+    int currentHour; // Add a member to store the current hour
+    int currentMinute; // Add a member to store the current minute
 };
 /*MAIN.C*/
 struct DateTime printCurrentTimeAndDay();
 void displayTimeSlots(struct TimeSlot* week[6]);
-int main();
 
 /*USER.C*/
 void createUser(struct User** users, const char* name, int phone, const char* prof);

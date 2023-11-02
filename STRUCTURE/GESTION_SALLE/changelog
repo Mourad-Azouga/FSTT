@@ -21,5 +21,7 @@ memory issues expected. V-1.1.0
 -Translated to French
 #1/11/2023:
 -Added time and date.
--Added delete user function(fully working)
--V-2.2.0
+-Added delete user function(fully working) V-2.2.0
+-Removed time and date function and replaced it with a new function that returns the time and day index, added a small struct in main
+that turns the day index into day again, this is to make the new version work. V-2.2.1
+

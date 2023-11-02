@@ -16,13 +16,15 @@ struct DateTime printCurrentTimeAndDay() {
 
     // Store the day index
     dateTime.dayIndex = timeInfo->tm_wday;
+	dateTime.currentHour = timeInfo->tm_hour;
+	dateTime.currentMinute = timeInfo->tm_min;
 
     return dateTime;
 }
 
 // Function to display time slots
 void displayTimeSlots(struct TimeSlot* week[6]) {
-	const char* jours[]={"Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"};
+	const char* jours[]={"ID:1-Lundi", "ID:2-Mardi", "ID:3-Mercredi", "ID:4-Jeudi", "ID:5-Vendredi", "ID:6-Samedi"};
 	for (int day = 0; day < 6; day++) {
 		printf(" %s:\n", jours[day]);
 		struct TimeSlot* currentSlot = week[day];
@@ -43,7 +45,7 @@ void displayTimeSlots(struct TimeSlot* week[6]) {
 
 
 int main() {
-	const char* dayNames[] = {"Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"};
+	const char* dayNames[] = {"Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"};
 	struct DateTime currentDateTime = printCurrentTimeAndDay();
 	char input[10];
 	int chosenDay, chosenSlot;
