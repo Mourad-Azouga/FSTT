@@ -28,7 +28,7 @@ def cube(a):
     return(cub)
 def valab(a):
     if a < 0:
-        vall = a * -1
+        vall = -a
     else:
         vall = a
     return(vall)
@@ -83,6 +83,8 @@ while True:
         case 6:
             print("Vous avez choisis la Racine carrée\n")
             a = float(input("Saisir le num\n"))
+            if a < 0:
+                print(a, "< 0
             print("√",a,"=", raccar(a))
         case 7:
             print("Vous avez choisis le Carré\n")

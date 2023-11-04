@@ -1,7 +1,7 @@
 #include "header.h"
 
 // Create a new user
-void createUser(struct User** users, const char* name, int phone, const char* prof) {
+void createUser(struct User** users, const char* name, const char* phone, const char* prof) {
 	struct User* newUser = (struct User*)malloc(sizeof(struct User));
 	if (newUser == NULL) {
 		printf("Memory allocation failed.\n");
@@ -16,7 +16,8 @@ void createUser(struct User** users, const char* name, int phone, const char* pr
 	strncpy(newUser->name, name, sizeof(newUser->name) - 1);
 	newUser->name[sizeof(newUser->name) - 1] = '\0'; // Ensure null-terminated
 
-	newUser->phone = phone;
+	strncpy(newUser->phone, phone, sizeof(newUser->phone) - 1);
+	newUser->phone[sizeof(newUser->phone) - 1] = '\0'; // Ensure null-terminated
 
 	strncpy(newUser->prof, prof, sizeof(newUser->prof) - 1);
 	newUser->prof[sizeof(newUser->prof) - 1] = '\0'; // Ensure null-terminated
@@ -42,7 +43,7 @@ void displayUserDetails(struct User* user) {
 	if (user != NULL) {
 		printf("ID de l'utilisateur : %d\n", user->userID);
 		printf("Nom : %s\n", user->name);
-		printf("Numero de telephone : %d\n", user->phone);
+		printf("Numero de telephone : %s\n", user->phone);
 		printf("Profession : %s\n", user->prof);
 		printf("Nombre de reservations : %d\n", user->bookings);
 		// Add code to display other user details
@@ -62,7 +63,7 @@ void deleteUser(struct User** users, const char* name) {
 
 		// Ask for confirmation
 		char confirm[10];
-		printf("Êtes-vous sûr de vouloir supprimer cet utilisateur? (oui/non): ");
+		printf("Etes-vous sur de vouloir supprimer cet utilisateur? (oui/non): ");
 		if (fgets(confirm, sizeof(confirm), stdin) != NULL) {
 			strtok(confirm, "\n"); // Remove newline character
 			if (strcmp(confirm, "oui") == 0) {
@@ -85,9 +86,9 @@ void deleteUser(struct User** users, const char* name) {
 				// Free memory for the deleted user
 				free(userToDelete);
 
-				printf("Utilisateur supprimé avec succès.\n");
+				printf("Utilisateur supprime avec succes.\n");
 			} else {
-				printf("Suppression de l'utilisateur annulée.\n");
+				printf("Suppression de l'utilisateur annulee.\n");
 			}
 		}
 	} else {

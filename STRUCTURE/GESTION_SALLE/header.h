@@ -11,7 +11,7 @@
 struct User {
 	int userID;
 	char name[100];
-	int phone;
+	char phone[19];
 	char prof[100];
 	int bookings;
 	struct TimeSlot* weeklyAppointments[6]; // For Monday to Saturday 6 fiha gher 2
@@ -19,12 +19,6 @@ struct User {
 };
 
 /*TIMESLOT INIT*/
-
-struct Day {
-	int dayOfWeek;
-	struct TimeSlot* appointments;
-	struct Day* next;
-};
 
 struct TimeSlot {//Don't group the time, for future use
 	int day;
@@ -47,7 +41,7 @@ struct DateTime printCurrentTimeAndDay();
 void displayTimeSlots(struct TimeSlot* week[6]);
 
 /*USER.C*/
-void createUser(struct User** users, const char* name, int phone, const char* prof);
+void createUser(struct User** users, const char* name, const char* phone, const char* prof);
 struct User* findUser(struct User* users, const char* name);
 void displayUserDetails(struct User* user);
 void deleteUser(struct User** users, const char* name);

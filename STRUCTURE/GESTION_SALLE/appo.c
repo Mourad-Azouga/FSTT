@@ -1,4 +1,5 @@
 #include "header.h"
+const char* jour[]={"Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"};
 
 struct TimeSlot* createTimeSlot(int day, int startH, int startM, int endH, int endM) {
 	struct TimeSlot* newSlot = (struct TimeSlot*)malloc(sizeof(struct TimeSlot));
@@ -60,7 +61,7 @@ int currentMinutes = (currentDateTime.currentHour * 60) + currentDateTime.curren
             printf("Entrez le numero du creneau horaire que vous souhaitez reserver (1-5) : ");
             if (fgets(input, sizeof(input), stdin) != NULL) {
                 if (sscanf(input, "%d", &chosenSlot) != 1 || chosenSlot < 1 || chosenSlot > 5) {
-                    printf("Entree non valide. Veuillez entrer un numero de creneau horaire valide (1-5).\n");
+                    printf("Entree non valide. Veuillez entrer un numero de creneau horaire valide (1-5).\n");//to be fixed, nhar sebt makinach 5
                     return;
                 }
 
@@ -82,7 +83,6 @@ int currentMinutes = (currentDateTime.currentHour * 60) + currentDateTime.curren
                 int slotStartMinutes = (currentSlot->startHour * 60) + currentSlot->startMinute;
 				
 				//Wont allow past day appointments, remove for test if you want
-				//only remove the first condition, tanya don't touch
                 if (chosenDay <= currentDateTime.dayIndex && currentMinutes >= slotStartMinutes) {
                     printf("Impossible de prendre un rendez-vous pour un creneau horaire qui a deja commence.\n");
                     return;
@@ -100,7 +100,7 @@ int currentMinutes = (currentDateTime.currentHour * 60) + currentDateTime.curren
 
                 // Reserve the time slot for the user
                 strcpy(currentSlot->name, userName);
-                printf("Rendez-vous reserve avec succes pour %s le jour %d.\n", userName, chosenDay);
+                printf("Rendez-vous reserve avec succes pour %s le jour %s.\n", userName, jour[chosenDay]);
             } else {
                 printf("Entree non valide. Veuillez reessayer.\n");
             }

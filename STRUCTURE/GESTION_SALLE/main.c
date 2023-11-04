@@ -16,6 +16,7 @@ struct DateTime printCurrentTimeAndDay() {
 
     // Store the day index
     dateTime.dayIndex = timeInfo->tm_wday;
+	//dont touch these, used for comparison in the makeappo
 	dateTime.currentHour = timeInfo->tm_hour;
 	dateTime.currentMinute = timeInfo->tm_min;
 
@@ -65,7 +66,6 @@ int main() {
 
 
 	struct User* users = NULL;
-	char cont[5];
 	int choice;
 
 	do {
@@ -105,7 +105,7 @@ int main() {
 						if (sscanf(input, "%d", &chosenDay) != 1 || chosenDay < 1 || chosenDay > 6) {
 							printf("Entree non valide. Veuillez entrer un jour valide (1-6).\n");
 						} else {
-							printf("Entrez le numéro du creneau horaire que vous souhaitez annuler (1-5) : ");
+							printf("Entrez le numero du creneau horaire que vous souhaitez annuler (1-5) : ");
 							if (fgets(input, sizeof(input), stdin) != NULL) {
 								if (sscanf(input, "%d", &chosenSlot) != 1 || chosenSlot < 1 || chosenSlot > 5) {
 									printf("Entree non valide. Veuillez entrer un numero de creneau horaire valide (1-5).\n");
@@ -120,20 +120,23 @@ int main() {
 				case 4:
 					printf("Creer un Nouvel Utilisateur\n");
 					char userName[100];
-					int phone;
-					char prof[10];
+					char phone[19];
+					char prof[100];
 					printf("Entrez le nom du nouvel utilisateur : ");
 					if (fgets(userName, sizeof(userName), stdin) != NULL) {
-						strtok(userName, "\n"); // Remove newline character
+						strtok(userName, "\n");//remove \n
+						if (findUser(users, userName) != NULL)
+						{printf("user exists");
+						break;}
 						printf("Entrez le numero de telephone :");
-						if (scanf("%d", &phone) != 1) { //Kayna mochkil hna ida kan input != int
-							printf("Entree non valide. Veuillez entrer un numero de telephone valide.\n");
+						if (scanf("%19s", phone) != 1) { 
+    					printf("Entree non valide. Veuillez entrer un numero de telephone valide.\n");
 						}
 						getchar(); // Consume the newline character left by scanf
 
 						printf("Entrez la profession : ");
 						if (fgets(prof, sizeof(prof), stdin) != NULL) {
-							strtok(prof, "\n"); // Remove newline character
+							strtok(prof, "\n"); // Remove\n from string
 							createUser(&users, userName, phone, prof);
 							printf("Utilisateur cree avec succes.\n");
 						} else {
