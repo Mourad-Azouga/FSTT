@@ -1,0 +1,126 @@
+*{
+    box-sizing: border-box;
+}
+body {
+    height:100vh;
+    width:100vw;
+    overflow:hidden;
+  }
+  .head{    
+    margin: -30px 1px 1px 1px;
+    width:100%;
+    height:5%;
+    font-size: large;
+    display:flex;
+    justify-content: center;
+    position:absolute;
+  }
+  .frame1 {
+    float:left;
+    width:34%;
+    height:35vw;
+    margin:5% 0px 0px 10px;
+    border: 3px solid #000;
+    overflow:scroll;
+  }
+  .mot{
+    display:flex;
+    justify-content: center;
+  }
+  .desc{
+    width:80%;
+    height:30%;
+    margin:auto;
+    border: 2px solid grey;
+    border-radius:10px;
+    overflow:scroll;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    font-size: larger;
+  }
+
+  .img {
+    border: 3px solid #000;
+    border-radius: 10px;
+    width: 70%;
+    height: 45%;
+    margin: 10px auto;
+    overflow: hidden;
+    text-align: center;
+}
+
+.img img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    margin: 0 auto;
+    padding: 10px;
+}
+  
+  .frame2 {
+    margin:5% 20px 20px 20px;
+    float:right;
+    width:50%;
+    height:35vw;
+    border: 3px solid #000;
+    justify-content: right;
+    border-radius:10px;
+    box-shadow: 5px 5px 0 0 gray;
+}
+.footer{
+    width:100%;
+    height:5%;
+    font-size: large;
+    display:flex;
+    justify-content: center;
+    position:fided;
+    align-items: center;
+}
+ol {
+    list-style-type: none; /* Remove default bullets */
+}
+
+ol li {
+    position: relative; /* Position list items relative for counters */
+    counter-increment: level1;
+}
+
+
+
+ol li:before {
+    position:absolute !important;
+    left:-1.5rem;
+    display: inline-block !important;
+    content: counter(level1, upper-roman) ". "; /* Display the first-level counter */
+}
+
+/* Reset counters for each new first-level list item */
+ol ol li {
+    counter-increment: level2;
+}
+
+
+ol ol li:before {
+    content: counter(level1, upper-roman) "." counter(level2) " "; /* Display first and second-level counters */
+}
+
+/* Reset counters for each new second-level list item */
+ol ol ol li {
+    counter-increment: level3;
+}
+
+ol ol ol li :last-child,
+ol ol ol li:first-child {
+    background-color: transparent;
+}
+
+ol ol ol li:before {
+    content: "\25A0"; /* Unicode character for a solid square */
+    margin-right: 4px;
+}
+
+
+  
+  
+
