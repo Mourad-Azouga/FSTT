@@ -1,0 +1,14 @@
+div, h1{
+  text-align: center;
+  }
+  tr:nth-child(2n+1){
+  background-color: rgb(231, 225, 225);
+  }
+  table {
+  width:50%;
+  margin: auto;
+  }
+  
+  input{
+  margin: 5px;
+  }

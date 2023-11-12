@@ -1,6 +1,10 @@
 *{
     box-sizing: border-box;
 }
+#addButton{
+  position:absolute;
+  z-index: 1;
+}
 body {
     height:100vh;
     width:100vw;
@@ -22,6 +26,33 @@ body {
     margin:5% 0px 0px 10px;
     border: 3px solid #000;
     overflow:scroll;
+  }
+  .center-button.left{
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 20px solid black;
+    border-radius:5px;
+    border-radius:5px;
+    cursor: pointer;
+    position: fixed;
+    transform: rotate(90deg);
+    top: 49%;
+    left: 41%;
+  }
+  .center-button.right{
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 20px solid black;
+    border-radius:5px;
+    cursor: pointer;
+    position: fixed;
+    transform: rotate(-90deg);
+    top: 49%;
+    left: 39%;
   }
   .mot{
     display:flex;
@@ -78,49 +109,12 @@ body {
     align-items: center;
 }
 ol {
-    list-style-type: none; /* Remove default bullets */
+  list-style-type: none;
 }
 
-ol li {
-    position: relative; /* Position list items relative for counters */
-    counter-increment: level1;
+button{
+  background-color: transparent;
+  border:transparent;
 }
 
-
-
-ol li:before {
-    position:absolute !important;
-    left:-1.5rem;
-    display: inline-block !important;
-    content: counter(level1, upper-roman) ". "; /* Display the first-level counter */
-}
-
-/* Reset counters for each new first-level list item */
-ol ol li {
-    counter-increment: level2;
-}
-
-
-ol ol li:before {
-    content: counter(level1, upper-roman) "." counter(level2) " "; /* Display first and second-level counters */
-}
-
-/* Reset counters for each new second-level list item */
-ol ol ol li {
-    counter-increment: level3;
-}
-
-ol ol ol li :last-child,
-ol ol ol li:first-child {
-    background-color: transparent;
-}
-
-ol ol ol li:before {
-    content: "\25A0"; /* Unicode character for a solid square */
-    margin-right: 4px;
-}
-
-
-  
-  
 
