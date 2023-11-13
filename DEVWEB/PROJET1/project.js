@@ -1,13 +1,21 @@
 const listContainer = document.getElementById('listContainer');
+const totalCountElement = document.getElementById('totalcount');
+
+function countDictKeys() {
+  const totalCount = Object.keys(dict).length;
+  totalCountElement.textContent = `Total Count: ${totalCount}`;
+}
+//L9lib a3mo l9lib asidi, makhedamach 100% makatkhlikch tdir display les infos ATTENTION IMPORTANT!
 function toggleFrames() {
   const frame1 = document.querySelector('.frame1');
   const frame2 = document.querySelector('.frame2');
-  const tempHTML = frame1.innerHTML;
-  frame1.innerHTML = frame2.innerHTML;
-  frame2.innerHTML = tempHTML;
+  frame1.classList.toggle('frame1');
+  frame1.classList.toggle('frame2');
+  frame2.classList.toggle('frame1');
+  frame2.classList.toggle('frame2');
 }
-
-const dict = {
+//Base données initial 
+ dict = {
   "Développement Web": ["", "", "Le développement Web désigne de manière générale les tâches associées au développement de sites Web destinés à être hébergés via un intranet ou Internet."],
   "oppa": ["", "", "Le développement Web désigne de manière générale les tâches associées au développement de sites Web destinés à être hébergés via un intranet ou Internet."],
   "Côté client": ["Développement Web", "", "fait référence à tout ce qui est affiché ou se déroule dans une application Web sur le client (appareil de l'utilisateur final)"],
@@ -20,9 +28,10 @@ const dict = {
   "PP": ["Côté", "php.jpg", "Hypertext Preprocessor: langage de programmation libre, principalement utilisé pour produire des pages Web dynamiques via un serveur web."]
 };
 function buildHierarchy(topParent, type) {
+
   var ol = document.createElement('ol');
   ol.type = type;
-
+  
   Object.keys(dict).forEach(function (key) {
     if (dict[key][0] === topParent) {
       var li = document.createElement('li');
@@ -32,21 +41,20 @@ function buildHierarchy(topParent, type) {
       summaryLi.appendChild(summary);
       li.appendChild(summaryLi);
 
-	   const deleteButton = document.createElement('button');
-     deleteButton.setAttribute('type', 'button');
-     deleteButton.setAttribute('onclick', 'remove(this)');
-     deleteButton.textContent = '⋫ ';
-     li.appendChild(deleteButton);
+      const removeButton = document.createElement('button');
+      removeButton.setAttribute('type', 'button');
+      removeButton.addEventListener('click', function () {
+        const keyToRemove = this.parentNode.querySelector('summary').textContent;
+        removeElement(keyToRemove);
+      });
+      removeButton.textContent = '⋫ ';
+      li.appendChild(removeButton);
 
      var addabButton = document.createElement('button');
      addabButton.setAttribute('type', 'button');
      addabButton.addEventListener('click', function () {
-       const clickedElement = addabButton.parentElement;
-       const newListItem = document.createElement('li');
-       const newSummary = document.createElement('summary');
-       newSummary.textContent = 'New Item';
-       newListItem.appendChild(newSummary);
-       clickedElement.parentNode.insertBefore(newListItem, clickedElement);
+      let choice=1;
+      addNewItem(key, choice);
      });
      addabButton.textContent = '⊷';
      li.appendChild(addabButton);
@@ -55,12 +63,8 @@ function buildHierarchy(topParent, type) {
      var addblButton = document.createElement('button');
      addblButton.setAttribute('type', 'button');
      addblButton.addEventListener('click', function () {
-             const clickedElement = addabButton.parentElement;
-             const newListItem = document.createElement('li');
-             const newSummary = document.createElement('summary');
-             newSummary.textContent = 'New Item';
-             newListItem.appendChild(newSummary);
-             clickedElement.parentNode.insertBefore(newListItem, clickedElement.nextSibling);
+      let choice=2;
+      addNewItem(key, choice);
   });
      addblButton.textContent = '⊶';
      li.appendChild(addblButton);
@@ -102,18 +106,19 @@ function buildHierarchy(topParent, type) {
   }
 }
 
-
 document.getElementById('listContainer').addEventListener('click', function (event) {
   const clickedElement = event.target;
   if (clickedElement.tagName === 'BUTTON' && clickedElement.textContent === '⋫ ') {
     const liToRemove = clickedElement.parentNode;
-    liToRemove.parentNode.removeChild(liToRemove);
+    liToRemove.parentNode.removeChild(liToRemove);  
   }
 });
-
+function removeElement(keyToRemove) {
+  delete dict[keyToRemove];
+  buildHierarchy('');
+}
 
 listContainer.appendChild(buildHierarchy(''));
-
 
 listContainer.addEventListener('click', function (event) {
     const clickedElement = event.target;
@@ -121,6 +126,29 @@ listContainer.addEventListener('click', function (event) {
     const itemName = clickedElement.textContent.trim();
     const imageSource = dict[itemName][1];
     displayDescription(description, itemName, imageSource);
+  });
+  listContainer.addEventListener('dblclick', function (event) {
+    const clickedElement = event.target;
+  
+    // Check if the clicked element is a summary (you might need to adjust this based on your HTML structure)
+    if (clickedElement.tagName === 'SUMMARY') {
+      const itemName = clickedElement.textContent.trim();
+  
+      // Get the current values from the dict object
+      const [parent, imageUrl, description] = dict[itemName];
+  
+      // Display current values in an alert and prompt for new values
+      const newName = prompt(`Enter new Name:`, itemName);
+      const newImageUrl = prompt(`Current Image URL: ${imageUrl}\nEnter new Image URL:`, imageUrl);
+      const newDescription = prompt(`Current Description: ${description}\nEnter new Description:`, description);
+  
+      // Update the dict object with the new values
+      dict[itemName] = [parent, newImageUrl, newDescription];
+  
+      // Rebuild the hierarchy to reflect the changes
+      listContainer.innerHTML = '';
+      listContainer.appendChild(buildHierarchy(''));
+    }
   });
   
   function getDescription(item) {
@@ -145,5 +173,28 @@ listContainer.addEventListener('click', function (event) {
         descriptionElement.innerHTML = description;
         itemNameElement.innerText = itemName;
     }
+}
+
+// Function to handle adding new items
+function addNewItem(key, choice) {
+  const newItemKey = prompt('Enter the key for the new item:');
+  const newItemImage = prompt('Enter the image link for the new item:');
+  const newItemDescription = prompt('Enter the description for the new item:');
+
+
+  const dictArray = Object.entries(dict);
+  const selectedIndex = dictArray.findIndex(([k, v]) => k === key);
+  if (choice === 1){
+    dictArray.splice(selectedIndex, 0, [newItemKey, [dict[key][0], newItemImage, newItemDescription]]);
+  }
+  else
+  {
+    dictArray.splice(selectedIndex + 1, 0, [newItemKey, ["", newItemImage, newItemDescription]]);
+  }
+  dict = Object.fromEntries(dictArray);
+
+
+  listContainer.innerHTML = '';
+  listContainer.appendChild(buildHierarchy(dict[key][0]));
 }
 
