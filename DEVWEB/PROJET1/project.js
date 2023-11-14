@@ -1,10 +1,5 @@
 const listContainer = document.getElementById('listContainer');
-const totalCountElement = document.getElementById('totalcount');
 
-function countDictKeys() {
-  const totalCount = Object.keys(dict).length;
-  totalCountElement.textContent = `Total Count: ${totalCount}`;
-}
 //L9lib a3mo l9lib asidi, makhedamach 100% makatkhlikch tdir display les infos ATTENTION IMPORTANT!
 function toggleFrames() {
   const frame1 = document.querySelector('.frame1');
@@ -40,6 +35,11 @@ function buildHierarchy(topParent, type) {
       summary.textContent = key;
       summaryLi.appendChild(summary);
       li.appendChild(summaryLi);
+      ol.classList.add('collapsible');
+      var summary = document.createElement('summary');
+      var details = document.createElement('details');
+      details.appendChild(summary);
+      details.appendChild(ol);
 
       const removeButton = document.createElement('button');
       removeButton.setAttribute('type', 'button');
@@ -111,6 +111,7 @@ document.getElementById('listContainer').addEventListener('click', function (eve
   if (clickedElement.tagName === 'BUTTON' && clickedElement.textContent === '⋫ ') {
     const liToRemove = clickedElement.parentNode;
     liToRemove.parentNode.removeChild(liToRemove);  
+  updateFooter();
   }
 });
 function removeElement(keyToRemove) {
@@ -129,16 +130,12 @@ listContainer.addEventListener('click', function (event) {
   });
   listContainer.addEventListener('dblclick', function (event) {
     const clickedElement = event.target;
-  
-    // Check if the clicked element is a summary (you might need to adjust this based on your HTML structure)
-    if (clickedElement.tagName === 'SUMMARY') {
       const itemName = clickedElement.textContent.trim();
   
       // Get the current values from the dict object
       const [parent, imageUrl, description] = dict[itemName];
   
       // Display current values in an alert and prompt for new values
-      const newName = prompt(`Enter new Name:`, itemName);
       const newImageUrl = prompt(`Current Image URL: ${imageUrl}\nEnter new Image URL:`, imageUrl);
       const newDescription = prompt(`Current Description: ${description}\nEnter new Description:`, description);
   
@@ -148,7 +145,7 @@ listContainer.addEventListener('click', function (event) {
       // Rebuild the hierarchy to reflect the changes
       listContainer.innerHTML = '';
       listContainer.appendChild(buildHierarchy(''));
-    }
+    
   });
   
   function getDescription(item) {
@@ -175,7 +172,7 @@ listContainer.addEventListener('click', function (event) {
     }
 }
 
-// Function to handle adding new items
+// collapsable problem doesn't inherit
 function addNewItem(key, choice) {
   const newItemKey = prompt('Enter the key for the new item:');
   const newItemImage = prompt('Enter the image link for the new item:');
@@ -189,12 +186,37 @@ function addNewItem(key, choice) {
   }
   else
   {
-    dictArray.splice(selectedIndex + 1, 0, [newItemKey, ["", newItemImage, newItemDescription]]);
+    dictArray.splice(selectedIndex + 1, 0, [newItemKey, [dict[key][0], newItemImage, newItemDescription]]);
   }
   dict = Object.fromEntries(dictArray);
 
 
   listContainer.innerHTML = '';
-  listContainer.appendChild(buildHierarchy(dict[key][0]));
+  updateFooter();
+  listContainer.appendChild(buildHierarchy(''));
 }
 
+function updateFooter() {
+  let level1Count = 0;
+  let level2Count = 0;
+  let level3Count = 0;
+
+  Object.keys(dict).forEach((key) => {
+    const parentKey = dict[key][0];
+
+    if (!parentKey || !dict[parentKey]) {
+      // Level 1 item not used just for the sake of my sanity
+      level1Count++;
+    } else if (dict[parentKey][0] in dict) {
+      // Level 2 item not updating correctly needs fixes
+      level2Count++;
+    } else {
+      // Level 3 item
+      level3Count++;
+    }
+  });
+  const averagemistersalta3 = level3Count / (level2Count || 1);
+  const footer = document.querySelector('.footer');
+  footer.innerHTML = `<h3>Nbr des mots:  ${level2Count}</h3><h3>Nbr des sous-cat ${level3Count}</h3><h3>Nbr des mots moyen par categorie:${averagemistersalta3.toFixed(0)}</h3>`;
+}
+updateFooter();
