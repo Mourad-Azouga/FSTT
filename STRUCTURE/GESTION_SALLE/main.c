@@ -164,7 +164,7 @@ int main() {
 					printf("Saisissez le nom de l'utilisateur que vous souhaitez supprimer : ");
 					if (fgets(userNameToDelete, sizeof(userNameToDelete), stdin) != NULL) {
 						strtok(userNameToDelete, "\n"); // Remove newline character
-						deleteUser(&users, userNameToDelete);
+						deleteUser(&users, userNameToDelete, week);
 					} else {
 						printf("Erreur d'entree. Veuillez reessayer.\n");
 					}

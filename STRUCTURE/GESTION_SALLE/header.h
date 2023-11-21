@@ -44,7 +44,7 @@ void displayTimeSlots(struct TimeSlot* week[6]);
 void createUser(struct User** users, const char* name, const char* phone, const char* prof);
 struct User* findUser(struct User* users, const char* name);
 void displayUserDetails(struct User* user);
-void deleteUser(struct User** users, const char* name);
+void deleteUser(struct User** users, const char* name, struct TimeSlot* week[6]);
 
 
 /*APPO.C*/

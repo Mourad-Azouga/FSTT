@@ -53,7 +53,7 @@ void displayUserDetails(struct User* user) {
 }
 
 // Function to delete a user
-void deleteUser(struct User** users, const char* name) {
+void deleteUser(struct User** users, const char* name, struct TimeSlot* week[6]) {
 	// Find the user
 	struct User* userToDelete = findUser(*users, name);
 
@@ -70,7 +70,6 @@ void deleteUser(struct User** users, const char* name) {
 				// User confirmed deletion
 				struct User* current = *users;
 				struct User* prev = NULL;
-
 				// Find and delete the user from the list
 				while (current != userToDelete) {
 					prev = current;
@@ -85,7 +84,15 @@ void deleteUser(struct User** users, const char* name) {
 
 				// Free memory for the deleted user
 				free(userToDelete);
-
+               for (int day = 0; day < 6; day++) {
+                    struct TimeSlot* currentSlot = week[day];
+                    while (currentSlot != NULL) {
+                        if (strcmp(currentSlot->name, name) == 0) {
+                            strcpy(currentSlot->name, "Disponible");
+                        }
+                        currentSlot = currentSlot->next;
+                    }
+                }
 				printf("Utilisateur supprime avec succes.\n");
 			} else {
 				printf("Suppression de l'utilisateur annulee.\n");

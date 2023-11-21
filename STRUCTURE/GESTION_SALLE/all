@@ -1,0 +1,490 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<stddef.h>
+#include<string.h>
+#include<time.h>
+#include<windows.h>
+
+/*USER INIT*/
+struct User {
+	int userID;
+	char name[100];
+	char phone[19];
+	char prof[100];
+	int bookings;
+	struct TimeSlot* weeklyAppointments[6]; // For Monday to Saturday 6 fiha gher 2
+	struct User* next;
+};
+
+/*TIMESLOT INIT*/
+
+struct TimeSlot {//Don't group the time, for future use
+	int day;
+	int startHour;
+	int startMinute;
+	int endHour;
+	int endMinute;
+	char name[100];
+	struct TimeSlot* next;
+};
+
+struct DateTime {//will be used to eliminate past time appointments !IMPORTANT
+    char timeString[9];
+    int dayIndex;
+    int currentHour; // Add a member to store the current hour
+    int currentMinute; // Add a member to store the current minute
+};
+/*MAIN.C*/
+struct DateTime printCurrentTimeAndDay();
+void displayTimeSlots(struct TimeSlot* week[6]);
+
+/*USER.C*/
+void createUser(struct User** users, const char* name, const char* phone, const char* prof);
+struct User* findUser(struct User* users, const char* name);
+void displayUserDetails(struct User* user);
+void deleteUser(struct User** users, const char* name);
+
+
+/*APPO.C*/
+struct TimeSlot* createTimeSlot(int day, int startH, int startM, int endH, int endM);
+void makeAppointment(struct TimeSlot* day[6], struct User* users);
+void deleteAppointment(struct TimeSlot* week[6], int day, int slotNumber);
+void displayTimeSlots(struct TimeSlot* week[6]);
+
+
+
+
+
+const char* jour[]={"Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"};
+
+struct TimeSlot* createTimeSlot(int day, int startH, int startM, int endH, int endM) {
+	struct TimeSlot* newSlot = (struct TimeSlot*)malloc(sizeof(struct TimeSlot));
+	if (newSlot == NULL) {
+		printf("Memory allocation failed.\n");
+		exit(1);
+	}
+	newSlot->day = day;
+	newSlot->startHour = startH;
+	newSlot->startMinute = startM;
+	newSlot->endHour = endH;
+	newSlot->endMinute = endM;
+	strcpy(newSlot->name, "Disponible"); //Set name to "Disponible" for init
+	newSlot->next = NULL;
+
+	return newSlot;
+}
+//----------------------------------------------------------------------------------------------------------------------
+// Function to make an appointment
+void makeAppointment(struct TimeSlot* day[6], struct User* users) {
+    struct DateTime currentDateTime = printCurrentTimeAndDay();
+int currentMinutes = (currentDateTime.currentHour * 60) + currentDateTime.currentMinute;
+
+    // Display available time slots
+    printf("Creneaux Horaires Disponibles :\n");
+    displayTimeSlots(day);
+
+    if (currentDateTime.dayIndex > 5) {
+        printf("Vous ne pouvez pas prendre de rendez-vous après samedi. Le programme est terminé pour la semaine.\n");
+        return;
+    }
+
+    // Ask the user to enter their name
+    char userName[100];
+    printf("Entrez votre nom : ");
+    if (fgets(userName, sizeof(userName), stdin) != NULL) {
+        strtok(userName, "\n"); // Remove newline character
+
+        // Check if the user exists
+        struct User* user = findUser(users, userName);
+
+        if (user == NULL) {
+            printf("L'utilisateur '%s' n'existe pas. Veuillez d'abord creer un utilisateur.\n", userName);
+            return;
+        }
+
+        // Ask the user to choose a day and a time slot
+        int chosenDay;
+        int chosenSlot;
+        char input[100];
+
+        printf("Entrez le numero du jour (1-6) ou vous souhaitez prendre un rendez-vous :  ");
+        if (fgets(input, sizeof(input), stdin) != NULL) {
+            if (sscanf(input, "%d", &chosenDay) != 1 || chosenDay < 1 || chosenDay > 6) {
+                printf("Entree non valide. Veuillez entrer un jour valide (1-6).\n");
+                return;
+            }
+
+            printf("Entrez le numero du creneau horaire que vous souhaitez reserver (1-5) : ");
+            if (fgets(input, sizeof(input), stdin) != NULL) {
+                if (sscanf(input, "%d", &chosenSlot) != 1 || chosenSlot < 1 || chosenSlot > 5) {
+                    printf("Entree non valide. Veuillez entrer un numero de creneau horaire valide (1-5).\n");//to be fixed, nhar sebt makinach 5
+                    return;
+                }
+
+                // Check if the selected time slot is available
+                struct TimeSlot* currentSlot = day[chosenDay - 1];
+                int slotNumber = 1;
+
+                while (currentSlot != NULL && slotNumber < chosenSlot) {
+                    currentSlot = currentSlot->next;
+                    slotNumber++;
+                }
+
+                if (currentSlot == NULL || strcmp(currentSlot->name, "Disponible") != 0) {
+                    printf("Creneau horaire non valide ou deja reserve. Veuillez en choisir un autre.\n");
+                    return;
+                }
+
+                // Check if the selected time slot has already started
+                int slotStartMinutes = (currentSlot->startHour * 60) + currentSlot->startMinute;
+				
+				//Wont allow past day appointments, remove for test if you want
+                if (chosenDay <= currentDateTime.dayIndex && currentMinutes >= slotStartMinutes) {
+                    printf("Impossible de prendre un rendez-vous pour un creneau horaire qui a deja commence.\n");
+                    return;
+                }
+
+                struct User* currentUser = users;
+                // Fetch the user who made the appointment and increment their bookings
+                while (currentUser != NULL) {
+                    if (strcmp(currentUser->name, userName) == 0) {
+                        currentUser->bookings++;
+                        break;  // No need to continue searching
+                    }
+                    currentUser = currentUser->next;
+                }
+
+                // Reserve the time slot for the user
+                strcpy(currentSlot->name, userName);
+                printf("Rendez-vous reserve avec succes pour %s le jour %s.\n", userName, jour[chosenDay]);
+            } else {
+                printf("Entree non valide. Veuillez reessayer.\n");
+            }
+        } else {
+            printf("Entree non valide. Veuillez reessayer.\n");
+        }
+    } else {
+        printf("Entree non valide. Veuillez reessayer.\n");
+    }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void deleteAppointment(struct TimeSlot* week[6], int day, int slotNumber) {
+	// Check if the day and slot number are valid
+	if (day < 1 || day > 6 || slotNumber < 1 || slotNumber > 5) {
+		printf("Jour ou numero de creneau non valide. Veuillez reessayer.\n");
+		return;
+	}
+
+	// Find the selected time slot
+	struct TimeSlot* currentSlot = week[day - 1];
+	int slot = 1;
+
+	while (currentSlot != NULL && slot < slotNumber) {
+		currentSlot = currentSlot->next;
+		slot++;
+	}
+
+	if (currentSlot == NULL) {
+		printf("Creneau horaire non valide. Veuillez reessayer.\n");
+		return;
+	}
+
+	// Check if the selected time slot is already available
+	if (strcmp(currentSlot->name, "Disponible") == 0) {
+		printf("Ce creneau horaire est deja disponible. Aucun rendez-vous à supprimer.\n");
+		return;
+	}
+
+	// The time slot is booked; delete the appointment
+	strcpy(currentSlot->name, "Disponible");
+	printf("Le rendez-vous dans le creneau %d le jour %d a ete supprime.\n", slotNumber, day);
+}
+
+// Create a new user
+void createUser(struct User** users, const char* name, const char* phone, const char* prof) {
+	struct User* newUser = (struct User*)malloc(sizeof(struct User));
+	if (newUser == NULL) {
+		printf("Memory allocation failed.\n");
+		exit(1);
+	}
+
+	// Assign a unique user ID (Starting from 1)
+	static int userIDCounter = 1;
+	newUser->userID = userIDCounter++;
+	newUser->bookings = 0;
+
+	strncpy(newUser->name, name, sizeof(newUser->name) - 1);
+	newUser->name[sizeof(newUser->name) - 1] = '\0'; // Ensure null-terminated
+
+	strncpy(newUser->phone, phone, sizeof(newUser->phone) - 1);
+	newUser->phone[sizeof(newUser->phone) - 1] = '\0'; // Ensure null-terminated
+
+	strncpy(newUser->prof, prof, sizeof(newUser->prof) - 1);
+	newUser->prof[sizeof(newUser->prof) - 1] = '\0'; // Ensure null-terminated
+
+	newUser->next = *users;
+	*users = newUser;
+}
+
+// Find a user by name
+struct User* findUser(struct User* users, const char* name) {
+	struct User* current = users;
+	while (current != NULL) {
+		if (strcmp(current->name, name) == 0) {
+			return current;
+		}
+		current = current->next;
+	}
+	return NULL; // User not found
+}
+
+// Display user details
+void displayUserDetails(struct User* user) {
+	if (user != NULL) {
+		printf("ID de l'utilisateur : %d\n", user->userID);
+		printf("Nom : %s\n", user->name);
+		printf("Numero de telephone : %s\n", user->phone);
+		printf("Profession : %s\n", user->prof);
+		printf("Nombre de reservations : %d\n", user->bookings);
+		// Add code to display other user details
+	} else {
+		printf("Utilisateur non trouve.\n");
+	}
+}
+
+// Function to delete a user
+void deleteUser(struct User** users, const char* name) {
+	// Find the user
+	struct User* userToDelete = findUser(*users, name);
+	
+	if (userToDelete != NULL) {
+		// Display user details
+		displayUserDetails(userToDelete);
+	
+		// Ask for confirmation
+		char confirm[10];
+		printf("Etes-vous sur de vouloir supprimer cet utilisateur? (oui/non): ");
+		if (fgets(confirm, sizeof(confirm), stdin) != NULL) {
+			strtok(confirm, "\n"); // Remove newline character
+			if (strcmp(confirm, "oui") == 0) {
+				// User confirmed deletion
+				struct User* current = *users;
+				struct User* prev = NULL;
+
+				// Find and delete the user from the list
+				while (current != userToDelete) {
+					prev = current;
+					current = current->next;
+				}
+
+				if (prev == NULL) {
+					*users = current->next;
+				} else {
+					prev->next = current->next;
+				}
+
+				// Free memory for the deleted user
+				free(userToDelete);
+
+				printf("Utilisateur supprime avec succes.\n");
+			} else {
+				printf("Suppression de l'utilisateur annulee.\n");
+			}
+		}
+	} else {
+		// User not found
+		printf("Utilisateur non trouvé.\n");
+	}
+}
+
+struct User* users = NULL;
+//function to find and index the current user time and day
+struct DateTime printCurrentTimeAndDay() {
+    struct DateTime dateTime;
+    time_t currentTime;
+    struct tm* timeInfo;
+
+    // Get the current time
+    time(&currentTime);
+    timeInfo = localtime(&currentTime);
+
+    // Format time as HH:MM:SS
+    strftime(dateTime.timeString, sizeof(dateTime.timeString), "%H:%M:%S", timeInfo);
+
+    // Store the day index
+    dateTime.dayIndex = timeInfo->tm_wday;
+	//dont touch these, used for comparison in the makeappo
+	dateTime.currentHour = timeInfo->tm_hour;
+	dateTime.currentMinute = timeInfo->tm_min;
+
+    return dateTime;
+}
+
+// Function to display time slots
+void displayTimeSlots(struct TimeSlot* week[6]) {
+	const char* jours[]={"ID:1-Lundi", "ID:2-Mardi", "ID:3-Mercredi", "ID:4-Jeudi", "ID:5-Vendredi", "ID:6-Samedi"};
+	for (int day = 0; day < 6; day++) {
+		printf(" %s:\n", jours[day]);
+		struct TimeSlot* currentSlot = week[day];
+		int slotNumber = 1;
+
+		while (currentSlot != NULL) {
+			printf("%d. %02d:%02d - %02d:%02d (%s)\n", slotNumber, currentSlot->startHour, currentSlot->startMinute,
+					currentSlot->endHour, currentSlot->endMinute, currentSlot->name);
+			slotNumber++;
+			currentSlot = currentSlot->next;
+		}
+		printf("\n");
+	}
+}
+
+
+
+
+
+int main() {
+	const char* dayNames[] = {"Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"};
+	struct DateTime currentDateTime = printCurrentTimeAndDay();
+	char input[10];
+	int chosenDay, chosenSlot;
+	struct TimeSlot* week[6]; // An array to hold time slots for 6 days
+	for (int day = 0; day < 6; day++) {
+		if (day == 5) {
+			week[day] = createTimeSlot(day + 1, 9, 0, 10, 45);
+			week[day]->next = createTimeSlot(day + 1, 11, 0, 12, 45);
+		} else {
+			week[day] = createTimeSlot(day + 1, 9, 0, 10, 45);
+			week[day]->next = createTimeSlot(day + 1, 11, 0, 12, 45);
+			week[day]->next->next = createTimeSlot(day + 1, 13, 0, 14, 45);
+			week[day]->next->next->next = createTimeSlot(day + 1, 15, 0, 16, 45);
+			week[day]->next->next->next->next = createTimeSlot(day + 1, 17, 0, 18, 45);
+		}
+	}
+
+
+	struct User* users = NULL;
+	int choice;
+
+	do {
+		Sleep(2000);
+		printf("\n---- Systeme de Reservation de Salle de Reunion ----\n");
+		printf("Heure actuelle : %s, Jour actuel : %s\n", currentDateTime.timeString, dayNames[currentDateTime.dayIndex]);
+		printf("1. Afficher les Creneaux Horaires Disponibles\n");
+		printf("2. Prendre un Rendez-vous\n");
+		printf("3. Annuler un Rendez-vous\n");
+		printf("4. Creer un Nouvel Utilisateur\n");
+		printf("5. Trouver un Utilisateur\n");
+		printf("6. Supprimer un Utilisateur\n");
+		printf("0. Quitter\n");
+		printf("Entrez votre choix : ");
+
+		if (fgets(input, sizeof(input), stdin) != NULL) {
+			if (sscanf(input, "%d", &choice) != 1 || choice < 0 || choice > 6) {
+				printf("Entree non valide. Veuillez entrer un choix valide (0-6).\n");
+				continue;
+			}
+
+			switch (choice) {
+				case 1:
+					printf("Creneaux Horaires Disponibles :\n");
+					displayTimeSlots(week);
+					break;
+				case 2:
+					makeAppointment(week, users);
+					break;
+				case 0:
+					printf("Fermeture du programme.\n");
+					break;
+				case 3:
+					printf("Annuler un Rendez-vous\n");
+					printf("Entrez le numero du jour (1-6) pour le rendez-vous que vous souhaitez supprimer : ");
+					if (fgets(input, sizeof(input), stdin) != NULL) {
+						if (sscanf(input, "%d", &chosenDay) != 1 || chosenDay < 1 || chosenDay > 6) {
+							printf("Entree non valide. Veuillez entrer un jour valide (1-6).\n");
+						} else {
+							printf("Entrez le numero du creneau horaire que vous souhaitez annuler (1-5) : ");
+							if (fgets(input, sizeof(input), stdin) != NULL) {
+								if (sscanf(input, "%d", &chosenSlot) != 1 || chosenSlot < 1 || chosenSlot > 5) {
+									printf("Entree non valide. Veuillez entrer un numero de creneau horaire valide (1-5).\n");
+								} else {
+									deleteAppointment(week, chosenDay, chosenSlot); // Updated function call
+								}
+							}
+						}
+					}
+					break;
+					break;
+				case 4:
+					printf("Creer un Nouvel Utilisateur\n");
+					char userName[100];
+					char phone[19];
+					char prof[100];
+					printf("Entrez le nom du nouvel utilisateur : ");
+					if (fgets(userName, sizeof(userName), stdin) != NULL) {
+						strtok(userName, "\n");//remove \n
+						if (findUser(users, userName) != NULL)
+						{printf("user exists");
+						break;}
+						printf("Entrez le numero de telephone :");
+						if (scanf("%19s", phone) != 1) { 
+    					printf("Entree non valide. Veuillez entrer un numero de telephone valide.\n");
+						}
+						getchar(); // Consume the newline character left by scanf
+
+						printf("Entrez la profession : ");
+						if (fgets(prof, sizeof(prof), stdin) != NULL) {
+							strtok(prof, "\n"); // Remove\n from string
+							createUser(&users, userName, phone, prof);
+							printf("Utilisateur cree avec succes.\n");
+						} else {
+							printf("Entree non valide.\n");
+						}
+					} else {
+						printf("Entree non valide.\n");
+					}
+					break;
+				case 5:
+					printf("Trouver un Utilisateur\n");
+					char searchName[100];
+					printf("Entrez le nom de l'utilisateur a trouver : ");
+					if (fgets(searchName, sizeof(searchName), stdin) != NULL) {
+						strtok(searchName, "\n"); // Remove newline character
+						struct User* foundUser = findUser(users, searchName);
+						displayUserDetails(foundUser);
+					} else {
+						printf("Entree non valide. Veuillez reessayer.\n");
+					}
+					break;
+				case 6:
+					printf("Supprimer un Utilisateur\n");
+					char userNameToDelete[100];
+					printf("Saisissez le nom de l'utilisateur que vous souhaitez supprimer : ");
+					if (fgets(userNameToDelete, sizeof(userNameToDelete), stdin) != NULL) {
+						strtok(userNameToDelete, "\n"); // Remove newline character
+						deleteUser(&users, userNameToDelete);
+					} else {
+						printf("Erreur d'entree. Veuillez reessayer.\n");
+					}
+					break;
+				default:
+					printf("Choix non valide. Veuillez reessayer.\n");
+			}
+		} else {
+			printf("Erreur d'entree. Veuillez reessayer.\n");
+		}
+
+	} while (choice != 0);
+
+	// Free memory for time slots
+	for (int day = 0; day < 6; day++) {
+		struct TimeSlot* currentSlot = week[day];
+		while (currentSlot != NULL) {
+			struct TimeSlot* nextSlot = currentSlot->next;
+			free(currentSlot);
+			currentSlot = nextSlot;
+		}
+	}
+
+	return 0;
+}
