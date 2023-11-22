@@ -84,7 +84,7 @@ while True:
             print("Vous avez choisis la Racine carrée\n")
             a = float(input("Saisir le num\n"))
             if a < 0:
-                print(a, "< 0
+                print(a, "< 0")
             print("√",a,"=", raccar(a))
         case 7:
             print("Vous avez choisis le Carré\n")
