@@ -1,4 +1,3 @@
-#3adel l'affichage makhedamch mezyan mlie kandiro return dial calcul f input dial affi katrewen d3wa
 panier = {
       "001" : ["Nido", 18, 1],
       "005" : ["Danone Caramel", 18, 3],
@@ -6,6 +5,12 @@ panier = {
       "003" : ["Pain", 2, 5],
       "004" : ["Tagger", 1, 2]
 }
+def cal_affi(panier):
+      sum = 0
+      for key in panier:
+            sum += panier[key][1] * panier[key][2]
+      tva = .2 * sum
+      return (sum+tva)
 
 def calcul(panier):
     sum = 0
@@ -93,12 +98,12 @@ while (True):
     
 
                 if P_Code in panier:
-                            panier[P_Code][2] += P_Qte
+                    panier[P_Code][2] += P_Qte
                 else:
-                            panier[P_Code] = [ P_Name, P_Price, P_Qte]
+                    panier[P_Code] = [ P_Name, P_Price, P_Qte]
                 print("Produit", panier[P_Code], "Ajoutee avec succe!")
         case 2: calcul(panier)
-        case 3: affi(panier, calcul(panier), option)
+        case 3: affi(panier, cal_affi(panier), option)
         case 4: modif(panier, sum)
         case 5: suppri(panier, sum)
         case 666: break
