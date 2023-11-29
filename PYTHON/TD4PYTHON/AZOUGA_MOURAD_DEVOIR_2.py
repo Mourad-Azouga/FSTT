@@ -1,5 +1,4 @@
-panier = [["001","Lait Jaouda", 4.00, 1], ["004","Frita", 1.00, 3], ["0095","Danone Caramel", 4.00, 1]]
-#Juste pour le test
+panier = []
 def ajout():
     print("Vous avez choisis l'ajout des produits")
     N = int(input("SVP de saisir le nombre des produits: "))
@@ -59,10 +58,10 @@ def affi(sum):
     panier.sort()
     for i in range(len(panier)):
         if panier[i][1].count(' ') == 0:
-            print("{}\t\t{}\t\t\t{}\t\t{:.2f}".format(panier[i][0], panier[i][1], panier[i][3], panier[i][2]))
+            print("{}\t\t{}\t\t\t{}\t\t\t{:.2f}DH".format(panier[i][0], panier[i][1], panier[i][3], panier[i][2]))
         else:
-            print("{}\t\t{}\t\t{}\t\t{:.2f}".format(panier[i][0], panier[i][1], panier[i][3], panier[i][2]))
-    print("Prix total:\t{:.2f} DH".format(sum + (sum * .2)))
+            print("{}\t\t{}\t\t{}\t\t\t{:.2f}DH".format(panier[i][0], panier[i][1], panier[i][3], panier[i][2]))
+    print("\nPrix total:\t{:.2f} DH".format(sum + (sum * .2)))
 
 def suppi():
     suppi_code = input("SVP de saisir le code d'item a supprimer:")
@@ -72,7 +71,7 @@ def suppi():
         quit
     else:
         print("Item trouver: {}".format(panier[id]))
-        choix2 = int(input("Etes vous sure?\n1->oui\n2->non"))
+        choix2 = int(input("Etes vous sure?\nTaper 1->oui\nTaper 2->non\n"))
         if choix2 == 1:
             panier.pop(id)
             print("Item supprime avec succee!")
@@ -81,7 +80,7 @@ def suppi():
             quit
 
 while (True):
-    print("\nBienvenu au System Panier by TimeXiTech:\nMenu general:\n(1) Ajouter les produits\n(2) Calculer le prix total des produits\n(3) Afficher la facture total du client\n(4) Modifier les informations d'un produit\n(5) Supprimer un produit")
+    print("\nBienvenu au System Panier:\nMenu general:\n(1) Ajouter les produits\n(2) Calculer le prix total des produits\n(3) Afficher la facture total du client\n(4) Modifier les informations d'un produit\n(5) Supprimer un produit")
     choix = int(input("Votre choix: "))
     match (choix):
         case 1 : ajout()
