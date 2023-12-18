@@ -1,0 +1,5 @@
+are2223449;Azouga;Mourad;21;admis
+c2223449;Azouga;Mourad;21;admis
+ddfe2223449;Azouga;Mourad;30;ajourne
+mdp223449;Azouga;Mourad;29;refuse
+v2223449;Azouga;Mourad;98;admis
