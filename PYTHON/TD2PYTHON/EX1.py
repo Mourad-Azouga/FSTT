@@ -1,16 +1,15 @@
-def Est_pair(X):
+def Est_pair (X):
     if X == 0:
-        return(9)
-    elif X % 2 == 0:
-        return(1)
+        print("X est 0")
+        return 2
+    if X % 2 == 0:
+        return 1
     else:
-        return(0)
-
-X = int(input("SVP saisir le nombre:\n"))
-renvoi = Est_pair(X)
-if renvoi == 1:
-    print(X, "Est un nombre pair")
-elif renvoi == 0:
-    print(X, "Est un nombre impair")
-elif renvoi == 9:
-    print(X, "Est zero")
+        return 0
+x = int(input("INput"))
+if (Est_pair(x) == 1):
+    print("pair")
+elif (Est_pair(x) == 0):
+    print("impair")
+else:
+    print("0")

@@ -1,16 +1,14 @@
 def somme_suite(N):
-    som=0
-    for i in range(N+1):
-        som += i
-    return(som)
-
-
-X = int(input("Entrer un entier: "))
-som = somme_suite(X)
-print("La somme de la suite est: ", end="")
-i = 1
-for i in range(1, X+1):
-    if i < X:
-        print(i,"+ ",end="")
-    else:
-        print(i, "=", som)
+    temp = 0
+    if N <= 0:
+        return 404
+    for i in range(N + 1):
+        temp = temp + N
+        N = N-1
+    return temp
+n = int(input("wowo"))
+w = somme_suite(n)
+if (w == 404):
+    print("error")
+else:
+    print(w)
