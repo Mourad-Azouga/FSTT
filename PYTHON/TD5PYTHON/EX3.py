@@ -1,13 +1,5 @@
 import os
-def menu() :
-    print("Menu principal")
-    print("(1) Ajouter les candidats ")
-    print("(2) Afficher la liste triée des candidats ") 
-    print("(3) Afficher la liste des candidas admis")
-    print("(4) Afficher la liste d'attente des candidats")
-    print("(5) Afficher les statistiques")
-    print("(6) Quitter")
-    return input("Entrer votre choix : ")
+
 def ajouter_candidats():   
     cin = input("SVP de saisir cin\n")
     nom = input("SVP de saisir nom\n")
@@ -78,7 +70,14 @@ def statistiques() :
         l4=len(l1)-len(l2)-len(l3)
         print("Le pourcentage des candidats ajournés est ",(l4/len(l1))*100,"%")
 while True :
-    choix=int(menu())
+    print("Menu principal")
+    print("(1) Ajouter les candidats ")
+    print("(2) Afficher la liste triée des candidats ") 
+    print("(3) Afficher la liste des candidas admis")
+    print("(4) Afficher la liste d'attente des candidats")
+    print("(5) Afficher les statistiques")
+    print("(6) Quitter")
+    choix = int(input("Entrer votre choix : "))
     match choix :
         case 1 :
             ajouter_candidats()
